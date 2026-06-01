@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Профіль користувача</h1>
+
+    <p><strong>Логін:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+
+    <p>
+        <strong>Про себе:</strong>
+        {% if profile.bio %}
+            {{ profile.bio|linebreaks }}
+        {% else %}
+            Інформація ще не додана.
+        {% endif %}
+    </p>
+
+    <p>
+        <a href="{% url 'profile_edit' %}">Редагувати профіль</a>
+    </p>
+
+    <hr>
+
+    <h2>Мої записи</h2>
+
+    {% if user_posts %}
+        {% for post in user_posts %}
+            <div class="post">
+                <h3>
+                    <a href="{% url 'post_detail' post.pk %}">
+                        {{ post.title }}
+                    </a>
+                </h3>
+                <p class="meta">
+                    Дата: {{ post.created_at|date:"d.m.Y H:i" }}
+                </p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Ви ще не створили жодного запису.</p>
+    {% endif %}
+{% endblock %}

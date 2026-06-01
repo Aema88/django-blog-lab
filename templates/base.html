@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Django Blog Lab</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+        }
+
+        header {
+            background: #222;
+            color: white;
+            padding: 15px 40px;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+
+        .container {
+            width: 80%;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+        }
+
+        .post {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+
+        .post h2 {
+            margin-bottom: 5px;
+        }
+
+        .post a {
+            color: #2c5aa0;
+            text-decoration: none;
+        }
+
+        .meta {
+            color: #777;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{% url 'post_list' %}">Головна</a>
+        <a href="/admin/">Адмін-панель</a>
+
+        {% if user.is_authenticated %}
+            <span>Вітаю, {{ user.username }}!</span>
+            <a href="{% url 'profile' %}">Профіль</a>
+            <a href="{% url 'post_create' %}">Новий запис</a>
+
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Вийти</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Увійти</a>
+            <a href="{% url 'register' %}">Реєстрація</a>
+        {% endif %}
+    </header>
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

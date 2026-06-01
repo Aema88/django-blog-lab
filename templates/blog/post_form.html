@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Новий запис</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Опублікувати</button>
+    </form>
+
+    <p>
+        <a href="{% url 'post_list' %}">Назад до блогу</a>
+    </p>
+{% endblock %}

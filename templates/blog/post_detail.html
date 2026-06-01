@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ post.title }}</h1>
+
+    <p class="meta">
+        Автор: {{ post.author.username }} |
+        Дата: {{ post.created_at|date:"d.m.Y H:i" }}
+    </p>
+
+    <p>{{ post.content|linebreaks }}</p>
+
+    <hr>
+
+    <h2>Коментарі</h2>
+
+    {% if comments %}
+        {% for comment in comments %}
+            <div class="post">
+                <p>{{ comment.text|linebreaks }}</p>
+                <p class="meta">
+                    Автор: {{ comment.author.username }} |
+                    Дата: {{ comment.created_at|date:"d.m.Y H:i" }}
+                </p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Коментарів поки немає.</p>
+    {% endif %}
+
+    <hr>
+
+    {% if user.is_authenticated %}
+        <h2>Додати коментар</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button type="submit">Надіслати</button>
+        </form>
+    {% else %}
+        <p>
+            Щоб залишити коментар,
+            <a href="{% url 'login' %}">увійдіть у систему</a>.
+        </p>
+    {% endif %}
+
+    <p>
+        <a href="{% url 'post_list' %}">Назад до списку записів</a>
+    </p>
+{% endblock %}
